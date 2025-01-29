@@ -94,7 +94,7 @@ async def get_song_file(message: Message, state: FSMContext):
         await message.answer("Пожалуйста, отправьте файл с песней")
 
     global path_to_file_in_buffer
-    path_to_file_in_buffer = "H:/Мой диск/Проект пиотоновый/libraryofsongs_bot/buffer/" + song_data["song"] + ".mp3"
+    path_to_file_in_buffer = f"H:/Мой диск/Проект пиотоновый/libraryofsongs_bot/buffer/creating/{song_data["song"]}.mp3"
 
     await bot.download_file(file_path, path_to_file_in_buffer)
 
@@ -126,7 +126,7 @@ async def all_song_is_correct(message: Message, state: FSMContext):
     if request.status_code == 201:
         await message.answer("Песня успешно создана!", reply_markup= ReplyKeyboardRemove())
     elif request.status_code == 422:
-        await message.answer("Ошибка данных", reply_markup=ReplyKeyboardRemove())
+        await message.answer("Ошибка данных. Скорее всего, песня уже существует", reply_markup=ReplyKeyboardRemove())
     else:
         await message.answer("Неизвестная ошибка", reply_markup=ReplyKeyboardRemove())
     
