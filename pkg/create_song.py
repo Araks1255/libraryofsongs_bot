@@ -22,7 +22,7 @@ class EmergingSong(StatesGroup):
     second_verify = State()
 
 @router.message(StateFilter(None), F.text == "Создать Песню")
-async def order(message: Message, state: FSMContext):
+async def start_creating_song(message: Message, state: FSMContext):
     await message.answer(
         text="Введите основной жанр, характерный для исполнителя",
         reply_markup=cancel_keyboard
