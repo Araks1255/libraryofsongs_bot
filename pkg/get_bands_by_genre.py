@@ -56,6 +56,6 @@ async def get_bands(message: Message, state: FSMContext):
         await message.answer(bands[f"{i+1}"])
         i += 1
 
-    await message.answer("Это все существующие в нашей базе данных группы, исполняющие в данном жанре", reply_markup=main)
+    await message.answer("Всё", reply_markup=main)
     await state.clear()
     

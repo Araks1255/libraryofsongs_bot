@@ -56,5 +56,5 @@ async def get_songs(message: Message, state: FSMContext):
         await message.answer(bands[f"{i+1}"])
         i += 1
 
-    await message.answer("Это все существующие в нашей базе данных песни из этого альбома", reply_markup=main)
+    await message.answer("Всё", reply_markup=main)
     await state.clear()

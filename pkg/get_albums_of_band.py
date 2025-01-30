@@ -56,5 +56,5 @@ async def get_albums(message: Message, state: FSMContext):
         await message.answer(albums[f"{i+1}"])
         i += 1
 
-    await message.answer("Это все альбомы данной группы, существующие в нашей базе данных", reply_markup=main)
+    await message.answer("Всё", reply_markup=main)
     await state.clear()
