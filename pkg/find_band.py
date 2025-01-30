@@ -7,6 +7,8 @@ from aiogram.fsm.context import FSMContext
 
 from pkg.keyboards.keyboards import cancel_keyboard, main
 
+from envs.env import ROOT_URL
+
 router = Router()
 
 class FindingBand(StatesGroup):
@@ -33,7 +35,7 @@ async def cancel(message:Message, state:FSMContext):
 async def get_band(message: Message, state: FSMContext):
     desired_band = message.text
 
-    url = f"http://localhost:8080/songs/band/{desired_band}"
+    url = f"{ROOT_URL}/band/{desired_band}"
 
     try:
         response = requests.get(url)

@@ -8,6 +8,8 @@ from aiogram.fsm.context import FSMContext
 
 from pkg.keyboards.keyboards import cancel_keyboard, main
 
+from envs.env import PATH_TO_PROJECT, ROOT_URL
+
 router = Router()
 
 class FindingSong(StatesGroup):
@@ -34,7 +36,7 @@ async def cancel(message:Message, state:FSMContext):
 async def get_song(message: Message, state: FSMContext):
     desired_song = message.text
 
-    url = f"http://localhost:8080/songs/song/{desired_song}"
+    url = f"{ROOT_URL}/song/{desired_song}"
 
     try:
         response = requests.get(url)
@@ -64,9 +66,9 @@ async def get_song(message: Message, state: FSMContext):
         await state.clear()
         return
 
-    path_to_file = f"H:/Мой диск/Проект пиотоновый/libraryofsongs_bot/buffer/getting/{song_name}.mp3"
+    path_to_file = f"{PATH_TO_PROJECT}/buffer/getting/{song_name}.mp3"
 
-    url = f"http://localhost:8080/songs/file/{genre}/{band}/{album}/{song_name}"
+    url = f"{ROOT_URL}/file/{genre}/{band}/{album}/{song_name}"
 
     try:
         response = requests.get(url)

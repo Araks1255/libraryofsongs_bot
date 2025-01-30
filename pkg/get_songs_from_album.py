@@ -7,6 +7,8 @@ from aiogram.fsm.state import StatesGroup, State
 
 from pkg.keyboards.keyboards import cancel_keyboard, main
 
+from envs.env import ROOT_URL
+
 router = Router()
 
 class GettingSongsFromAlbum(StatesGroup):
@@ -34,7 +36,7 @@ async def get_songs(message: Message, state: FSMContext):
     desired_album = message.text
 
     try:
-        response = requests.get(f"http://localhost:8080/songs/{desired_album}")
+        response = requests.get(f"{ROOT_URL}/{desired_album}")
     except requests.exceptions.ConnectionError:
         await message.answer(
             "Ошибка подключения к серверу",

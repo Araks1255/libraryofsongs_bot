@@ -7,8 +7,10 @@ from aiogram import Bot, Dispatcher
 
 from pkg import create_song, find_song, get_genres, get_bands_by_genre, get_albums_of_band, get_songs_from_album, find_album, find_band, saluting
 
+from envs.env import TOKEN
+
 async def main():
-    bot = Bot(token="7705741780:AAFqL0Bl-hlyTdXT-RWpssPU0RYmDlgFDvo")
+    bot = Bot(token=TOKEN)
     dp = Dispatcher()
     dp.include_routers(
         create_song.router,

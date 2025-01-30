@@ -3,12 +3,14 @@ from aiogram import F, Router
 from aiogram.filters import StateFilter
 from aiogram.types import Message
 
+from envs.env import ROOT_URL
+
 router = Router()
 
 @router.message(StateFilter(None), F.text == "Получить жанры")
 async def getting_genres(message: Message):
     try:
-        response = requests.get("http://localhost:8080/songs/genres")
+        response = requests.get(f"{ROOT_URL}/genres")
     except requests.exceptions.ConnectionError:
         await message.answer("Ошибка подключения к серверу")
         return

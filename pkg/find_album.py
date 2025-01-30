@@ -7,6 +7,8 @@ from aiogram.fsm.context import FSMContext
 
 from pkg.keyboards.keyboards import cancel_keyboard, main
 
+from envs.env import ROOT_URL
+
 router = Router()
 
 class FindingAlbum(StatesGroup):
@@ -33,7 +35,7 @@ async def cancel(message:Message, state:FSMContext):
 async def get_album(message: Message, state: FSMContext):
     desired_album = message.text
 
-    url = f"http://localhost:8080/songs/album/{desired_album}"
+    url = f"{ROOT_URL}/album/{desired_album}"
 
     try:
         response = requests.get(url)

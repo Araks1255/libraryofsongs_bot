@@ -7,6 +7,8 @@ from aiogram.fsm.state import StatesGroup, State
 
 from pkg.keyboards.keyboards import cancel_keyboard, main
 
+from envs.env import ROOT_URL
+
 router = Router()
 
 class GettiingBandByGenre(StatesGroup):
@@ -34,7 +36,7 @@ async def get_bands(message: Message, state: FSMContext):
     desired_genre = message.text
 
     try:
-        response = requests.get(f"http://localhost:8080/songs/bands/{desired_genre}")
+        response = requests.get(f"{ROOT_URL}/bands/{desired_genre}")
     except requests.exceptions.ConnectionError:
         await message.answer(
             "Ошибка подключения к серверу",

@@ -9,8 +9,10 @@ from aiogram.fsm.context import FSMContext
 
 from pkg.keyboards.keyboards import cancel_keyboard, yes_or_not, main
 
+from envs.env import TOKEN, PATH_TO_PROJECT, ROOT_URL
+
 router = Router()
-bot = Bot(token="7705741780:AAFqL0Bl-hlyTdXT-RWpssPU0RYmDlgFDvo")
+bot = Bot(token=TOKEN)
 
 class EmergingSong(StatesGroup):
     genre = State()
@@ -94,7 +96,7 @@ async def get_song_file(message: Message, state: FSMContext):
         await message.answer("Пожалуйста, отправьте файл с песней")
 
     global path_to_file_in_buffer
-    path_to_file_in_buffer = f"H:/Мой диск/Проект пиотоновый/libraryofsongs_bot/buffer/creating/{song_data["song"]}.mp3"
+    path_to_file_in_buffer = f"{PATH_TO_PROJECT}/buffer/creating/{song_data["song"]}.mp3"
 
     await bot.download_file(file_path, path_to_file_in_buffer)
 
@@ -128,7 +130,7 @@ async def all_song_is_correct(message: Message, state: FSMContext):
     )
 
     try:
-        request = requests.post("http://localhost:8080/songs/", data=form, headers={"Content-Type": form.content_type})
+        request = requests.post(ROOT_URL, data=form, headers={"Content-Type": form.content_type})
     except requests.exceptions.ConnectionError:
         await message.answer("Ошибка подключения к серверу", reply_markup=main)
 
