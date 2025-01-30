@@ -2,7 +2,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 main = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text="Найти песню")],
-    [KeyboardButton(text="Получить песни из альбома"), KeyboardButton(text="Получить исполнителей по жанру")],
+    [KeyboardButton(text="Получить песни из альбома"), KeyboardButton(text="Получить группы жанра")],
     [KeyboardButton(text="Создать песню")],
     [KeyboardButton(text="Получить жанры"), KeyboardButton(text="Получить альбомы исполнителя")],
     [KeyboardButton(text="Найти альбом"), KeyboardButton(text="Найти исполнителя")]

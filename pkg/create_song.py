@@ -4,7 +4,7 @@ from requests_toolbelt import MultipartEncoder
 from aiogram import F, Router, Bot
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.filters import StateFilter
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 
 from pkg.keyboards.keyboards import cancel_keyboard, yes_or_not, main
@@ -66,7 +66,6 @@ async def get_song(message: Message, state: FSMContext):
     await state.update_data(song=message.text)
     global song_data
     song_data = await state.get_data()
-    print(song_data)
     await message.answer(
         text=f"Жанр - {song_data["genre"]}\n"
             f"Исполнитель - {song_data["band"]}\n"
@@ -80,7 +79,8 @@ async def get_song(message: Message, state: FSMContext):
 @router.message(EmergingSong.verify, F.text == "Да")
 async def song_is_correct(message: Message, state: FSMContext):
     await message.answer(
-        "Отправьте файл с песней"
+        "Отправьте файл с песней",
+        reply_markup=ReplyKeyboardRemove()
     )
     await state.set_state(EmergingSong.song_file)
 
@@ -104,6 +104,15 @@ async def get_song_file(message: Message, state: FSMContext):
     )
 
     await state.set_state(EmergingSong.second_verify)
+
+@router.message(EmergingSong.verify, F.text == "Нет")
+async def song_is_uncorrect(message: Message, state: FSMContext):
+    await message.answer(
+        "Ну ладно",
+        reply_markup=main
+    )
+    await state.clear()
+    return
 
 @router.message(EmergingSong.second_verify, F.text == "Да")
 async def all_song_is_correct(message: Message, state: FSMContext):
@@ -135,3 +144,12 @@ async def all_song_is_correct(message: Message, state: FSMContext):
     os.remove(path_to_file_in_buffer)
 
     await state.clear()
+
+@router.message(EmergingSong.second_verify, F.text == "Нет")
+async def all_song_is_correct(message: Message, state: FSMContext):
+    await message.answer(
+        "Ну ладно",
+        reply_markup=main
+    )
+    await state.clear()
+    return

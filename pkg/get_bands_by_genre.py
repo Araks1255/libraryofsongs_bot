@@ -12,7 +12,7 @@ router = Router()
 class GettiingBandByGenre(StatesGroup):
     genre = State()
 
-@router.message(StateFilter(None), F.text == "Получить исполнителей по жанру")
+@router.message(StateFilter(None), F.text == "Получить группы жанра")
 async def getting_bands_by_genre(message: Message, state: FSMContext):
     await message.answer(
         "Введите жанр, по которому хотите найти исполнителей",
