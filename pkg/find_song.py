@@ -3,10 +3,10 @@ import os
 from aiogram import F, Router
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.filters import StateFilter
-from aiogram.types import Message, ReplyKeyboardRemove, FSInputFile
+from aiogram.types import Message, FSInputFile
 from aiogram.fsm.context import FSMContext
 
-from pkg.keyboards.keyboards import cancel_keyboard
+from pkg.keyboards.keyboards import cancel_keyboard, main
 
 router = Router()
 
@@ -25,7 +25,7 @@ async def finding_song(message: Message, state: FSMContext):
 async def cancel(message:Message, state:FSMContext):
     await message.answer(
         "Ну нет так нет",
-        reply_markup=ReplyKeyboardRemove()
+        reply_markup=main
     )
     await state.clear()
     return
@@ -39,7 +39,7 @@ async def get_song(message: Message, state: FSMContext):
     try:
         response = requests.get(url)
     except requests.exceptions.ConnectionError:
-        await message.answer("Ошибка подключения к серверу",reply_markup=ReplyKeyboardRemove())
+        await message.answer("Ошибка подключения к серверу",reply_markup=main)
         await state.clear()
         return
 
@@ -57,10 +57,10 @@ async def get_song(message: Message, state: FSMContext):
             f"Исполнитель - {band}\n"
             f"Альбом - {album}\n"
             f"Название - {song_name}",
-            reply_markup=ReplyKeyboardRemove()
+            reply_markup=main
         )
     elif response.status_code == 404:
-        await message.answer("Песня не найдена. Возможно вы опечатались, или её ещё не существует в базе данных.",reply_markup=ReplyKeyboardRemove())
+        await message.answer("Песня не найдена. Возможно вы опечатались, или её ещё не существует в базе данных.",reply_markup=main)
         await state.clear()
         return
 
@@ -71,7 +71,7 @@ async def get_song(message: Message, state: FSMContext):
     try:
         response = requests.get(url)
     except requests.exceptions.ConnectionError:
-        await message.answer("Ошибка подключения к серверу",reply_markup=ReplyKeyboardRemove())
+        await message.answer("Ошибка подключения к серверу",reply_markup=main)
         await state.clear()
         return
 

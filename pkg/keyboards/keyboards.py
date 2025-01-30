@@ -1,4 +1,14 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+
+main = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text="Найти песню")],
+    [KeyboardButton(text="Получить песни из альбома"), KeyboardButton(text="Получить исполнителей по жанру")],
+    [KeyboardButton(text="Создать песню")],
+    [KeyboardButton(text="Получить жанры"), KeyboardButton(text="Получить альбомы исполнителя")],
+    [KeyboardButton(text="Найти альбом"), KeyboardButton(text="Найти исполнителя")]
+],
+                            resize_keyboard=True,
+                            input_field_placeholder="Трунь")
 
 cancel_keyboard = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text="Отмена")]

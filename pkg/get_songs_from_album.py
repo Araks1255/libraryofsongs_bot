@@ -1,18 +1,18 @@
 import requests
 from aiogram import F, Router
 from aiogram.filters import StateFilter
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
-from pkg.keyboards.keyboards import cancel_keyboard
+from pkg.keyboards.keyboards import cancel_keyboard, main
 
 router = Router()
 
 class GettingSongsFromAlbum(StatesGroup):
     album = State()
 
-@router.message(StateFilter(None), F.text == "Получить все песни из альбома")
+@router.message(StateFilter(None), F.text == "Получить песни из альбома")
 async def getting_songs_from_album(message: Message, state: FSMContext):
     await message.answer(
         "Введите альбом, песни из которого желаете получить",
@@ -24,7 +24,7 @@ async def getting_songs_from_album(message: Message, state: FSMContext):
 async def cancel(message:Message, state:FSMContext):
     await message.answer(
         "Ну нет так нет",
-        reply_markup=ReplyKeyboardRemove()
+        reply_markup=main
     )
     await state.clear()
     return
@@ -38,14 +38,14 @@ async def get_songs(message: Message, state: FSMContext):
     except requests.exceptions.ConnectionError:
         await message.answer(
             "Ошибка подключения к серверу",
-            reply_markup=ReplyKeyboardRemove()
+            reply_markup=main
         )
         await state.clear()
         return
     
     bands = response.json()
     if len(bands) == 0:
-        await message.answer("Альбом не найден. Возможно, вы совершили опечатку, или его ещё нет в нашей базе данных")
+        await message.answer("Альбом не найден. Возможно, вы совершили опечатку, или его ещё нет в нашей базе данных", reply_markup=main)
         await state.clear()
         return
 
@@ -54,5 +54,5 @@ async def get_songs(message: Message, state: FSMContext):
         await message.answer(bands[f"{i+1}"])
         i += 1
 
-    await message.answer("Это все существующие в нашей базе данных песни из этого альбома")
+    await message.answer("Это все существующие в нашей базе данных песни из этого альбома", reply_markup=main)
     await state.clear()

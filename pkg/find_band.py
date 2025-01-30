@@ -9,18 +9,18 @@ from pkg.keyboards.keyboards import cancel_keyboard, main
 
 router = Router()
 
-class FindingAlbum(StatesGroup):
-    album = State()
+class FindingBand(StatesGroup):
+    band = State()
 
-@router.message(StateFilter(None), F.text == "Найти альбом")
+@router.message(StateFilter(None), F.text == "Найти исполнителя")
 async def finding_album(message: Message, state: FSMContext):
     await message.answer(
-        text="Введите название альбома",
+        text="Введите название группы или имя исполнителя",
         reply_markup=cancel_keyboard
     )
-    await state.set_state(FindingAlbum.album)
+    await state.set_state(FindingBand.band)
 
-@router.message(StateFilter(FindingAlbum), F.text == "Отмена")
+@router.message(StateFilter(FindingBand), F.text == "Отмена")
 async def cancel(message:Message, state:FSMContext):
     await message.answer(
         "Ну нет так нет",
@@ -29,11 +29,11 @@ async def cancel(message:Message, state:FSMContext):
     await state.clear()
     return
 
-@router.message(FindingAlbum.album)
-async def get_album(message: Message, state: FSMContext):
-    desired_album = message.text
+@router.message(FindingBand.band)
+async def get_band(message: Message, state: FSMContext):
+    desired_band = message.text
 
-    url = f"http://localhost:8080/songs/album/{desired_album}"
+    url = f"http://localhost:8080/songs/band/{desired_band}"
 
     try:
         response = requests.get(url)
@@ -42,10 +42,10 @@ async def get_album(message: Message, state: FSMContext):
         await state.clear()
         return
     
-    album = response.json()
-    if len(album) == 0:
+    band = response.json()
+    if len(band) == 0:
         await message.answer(
-            "Альбом не найден. Возможно, вы совершили опечатку, или его ещё не существует в нашей базе данных",
+            "Группа не найдена. Возможно, вы совершили опечатку, или её ещё не существует в нашей базе данных",
             reply_markup=main
             )
         await state.clear()
@@ -53,10 +53,9 @@ async def get_album(message: Message, state: FSMContext):
 
 
     await message.answer(
-        text="Альбом найден\n\n"
-        f"Жанр - {album["genre"]}\n"
-        f"Исполнитель - {album["band"]}\n"
-        f"Название - {album["album"]}",
+        text="Исполнитель найден\n\n"
+        f"Жанр - {band["genre"]}\n"
+        f"Имя исполнителя/название группы - {band["band"]}",
         reply_markup=main
     )
     await state.clear()

@@ -4,10 +4,10 @@ from requests_toolbelt import MultipartEncoder
 from aiogram import F, Router, Bot
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.filters import StateFilter
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 
-from pkg.keyboards.keyboards import cancel_keyboard, yes_or_not
+from pkg.keyboards.keyboards import cancel_keyboard, yes_or_not, main
 
 router = Router()
 bot = Bot(token="7705741780:AAFqL0Bl-hlyTdXT-RWpssPU0RYmDlgFDvo")
@@ -21,7 +21,7 @@ class EmergingSong(StatesGroup):
     verify = State()
     second_verify = State()
 
-@router.message(StateFilter(None), F.text == "Создать Песню")
+@router.message(StateFilter(None), F.text == "Создать песню")
 async def start_creating_song(message: Message, state: FSMContext):
     await message.answer(
         text="Введите основной жанр, характерный для исполнителя",
@@ -34,7 +34,7 @@ async def cancel(message:Message, state:FSMContext):
     await state.clear()
     await message.answer(
         "Ну нет так нет",
-        reply_markup=ReplyKeyboardRemove()
+        reply_markup=main
     )
 
 @router.message(EmergingSong.genre)
@@ -121,14 +121,14 @@ async def all_song_is_correct(message: Message, state: FSMContext):
     try:
         request = requests.post("http://localhost:8080/songs/", data=form, headers={"Content-Type": form.content_type})
     except requests.exceptions.ConnectionError:
-        await message.answer("Ошибка подключения к серверу", reply_markup=ReplyKeyboardRemove())
+        await message.answer("Ошибка подключения к серверу", reply_markup=main)
 
     if request.status_code == 201:
-        await message.answer("Песня успешно создана!", reply_markup= ReplyKeyboardRemove())
+        await message.answer("Песня успешно создана!", reply_markup= main)
     elif request.status_code == 422:
-        await message.answer("Ошибка данных. Скорее всего, песня уже существует", reply_markup=ReplyKeyboardRemove())
+        await message.answer("Ошибка данных. Скорее всего, песня уже существует", reply_markup=main)
     else:
-        await message.answer("Неизвестная ошибка", reply_markup=ReplyKeyboardRemove())
+        await message.answer("Неизвестная ошибка", reply_markup=main)
     
 
     file.close()
