@@ -56,7 +56,8 @@ async def get_song(message: Message, state: FSMContext):
             f"Жанр - {genre}\n"
             f"Исполнитель - {band}\n"
             f"Альбом - {album}\n"
-            f"Название - {song_name}"
+            f"Название - {song_name}",
+            reply_markup=ReplyKeyboardRemove()
         )
     elif response.status_code == 404:
         await message.answer("Песня не найдена. Возможно вы опечатались, или её ещё не существует в базе данных.",reply_markup=ReplyKeyboardRemove())
