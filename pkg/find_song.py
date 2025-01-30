@@ -23,7 +23,6 @@ async def finding_song(message: Message, state: FSMContext):
 
 @router.message(StateFilter(FindingSong), F.text == "Отмена")
 async def cancel(message:Message, state:FSMContext):
-    await state.clear()
     await message.answer(
         "Ну нет так нет",
         reply_markup=ReplyKeyboardRemove()
