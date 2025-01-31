@@ -3,7 +3,7 @@ from aiogram import F, Router
 from aiogram.filters import StateFilter
 from aiogram.types import Message
 
-from pkg.keyboards import main
+from pkg.keyboards.keyboards import main
 
 from envs.env import ROOT_URL
 

@@ -130,13 +130,16 @@ async def all_song_is_correct(message: Message, state: FSMContext):
     )
 
     try:
-        request = requests.post(ROOT_URL, data=form, headers={"Content-Type": form.content_type})
+        response = requests.post(f"{ROOT_URL}/", data=form, headers={"Content-Type": form.content_type})
     except requests.exceptions.ConnectionError:
         await message.answer("Ошибка подключения к серверу", reply_markup=main)
+        await state.clear()
+        file.close()
+        return
 
-    if request.status_code == 201:
+    if response.status_code == 201:
         await message.answer("Песня успешно создана!", reply_markup= main)
-    elif request.status_code == 422:
+    elif response.status_code == 422:
         await message.answer("Ошибка данных. Скорее всего, песня уже существует", reply_markup=main)
     else:
         await message.answer("Неизвестная ошибка", reply_markup=main)
