@@ -85,4 +85,3 @@ async def get_song(message: Message, state: FSMContext):
 
     os.remove(path_to_file)
     await state.clear()
-

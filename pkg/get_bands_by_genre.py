@@ -58,4 +58,3 @@ async def get_bands(message: Message, state: FSMContext):
 
     await message.answer("Всё", reply_markup=main)
     await state.clear()
-    
